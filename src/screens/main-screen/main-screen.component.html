@@ -49,7 +49,6 @@
         <br>
         <div class="row">
             <div class="col text-center">
-
                 <app-active-filter [title]="'¿Mostrar inactivos?'"
                     (active)="showInactiveUsers($event)"></app-active-filter>
             </div>
@@ -59,8 +58,6 @@
             </div>
         </div>
     </div>
-
-    <hr class="my-5">
 
     <div class="container mt-4">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
@@ -82,7 +79,8 @@
     </div>
 
     <hr class="my-5">
-    <app-pagination (selectedPage)="receivedNewPage($event)" [pages]="this.totalPages()"></app-pagination>
+    <app-pagination (selectedCount)="receivedNewCount($event)" (selectedPage)="receivedNewPage($event)"
+        [numberOfPages]="this.totalPages()"></app-pagination>
 
     <footer class="text-center text-muted small">
         &copy; 2025 Mi Aplicación. Todos los derechos reservados.

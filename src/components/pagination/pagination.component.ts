@@ -10,9 +10,11 @@ import { Component, input, OnChanges, OnInit, output, signal } from '@angular/co
 export class Pagination implements OnInit, OnChanges {
   totalPages = signal<number[]>([]);
   currentPage = signal<number>(1);
+  currentCount = signal<number>(1);
 
-  pages = input<number>(1);
+  numberOfPages = input<number>(1);
   selectedPage = output<number>();
+  selectedCount = output<number>();
 
   constructor() {
   }
@@ -26,18 +28,41 @@ export class Pagination implements OnInit, OnChanges {
   }
 
   initializeTotalPages() {
-    let pageArray = Array.from({ length: this.pages() }, (_, i) => i + 1);
+    let pageArray = Array.from({ length: this.numberOfPages() }, (_, i) => i + 1);
     this.totalPages.set(pageArray);
   }
 
-  selectPage(indexPage: number) {
-    let newIndex = ++indexPage;
-
+  selectPage(page: number) {
     // emitir nuevo evento (nueva página seleccionada) al padre
-    this.selectedPage.emit(newIndex);
+    this.selectedPage.emit(page);
 
     // seteamos la señal para mostrar por pantalla
-    this.currentPage.set(indexPage);
+    this.currentPage.set(page);
+  }
+
+  selectCount(count: number) {
+    this.selectedCount.emit(count);
+
+    this.currentCount.set(count);
+  }
+
+  addPage() {
+    let newCurrentPage = this.currentPage().valueOf() + 1;
+
+    if (newCurrentPage <= this.totalPages().length) {
+      this.currentPage.update(page => ++page);
+      this.selectedPage.emit(this.currentPage());
+    }
+
+  }
+
+  substractPage() {
+    let newCurrentPage = this.currentPage().valueOf() - 1;
+
+    if (newCurrentPage > 0) {
+      this.currentPage.update(page => --page);
+      this.selectedPage.emit(this.currentPage());
+    }
   }
 }
 

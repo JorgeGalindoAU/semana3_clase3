@@ -19,6 +19,7 @@ export class MainScreenComponent implements OnInit, OnDestroy {
 
   users = signal<IUser[]>([]);
   currentPage = signal<number>(1);
+  currentCount = signal<number>(1);
   totalPages = signal<number>(1);
 
   showInactive = signal<boolean>(false);
@@ -63,8 +64,14 @@ export class MainScreenComponent implements OnInit, OnDestroy {
     this.getUsers();
   }
 
+  receivedNewCount(count: number) {
+    this.currentCount.set(count);
+
+    this.getUsers();
+  }
+
   getUsers() {
-    this.userService.getUsers(3, this.currentPage())
+    this.userService.getUsers(this.currentCount(), this.currentPage())
       .subscribe(
         {
           next: (value: IUserPagination) => {
