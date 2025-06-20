@@ -1,0 +1,9 @@
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        @for (page of totalPages(); track $index) {
+        <li class="page-item" [ngClass]="this.currentPage() === page ? 'active':''"><a (click)="selectPage($index)"
+                class="page-link">{{page}}</a></li>
+
+        }
+    </ul>
+</nav>
